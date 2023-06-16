@@ -38,6 +38,7 @@ const hit = (val) => {
     let arr = ["+", "-", "/", "*"]
     let convertedInput = lastinput.innerHTML.replace(/\u00F7/g, "/")
     convertedInput = convertedInput.replace(/\u00D7/g, "*")
+    let pattern = /\+|\-|\/|\*/g
     // console.log(input.innerHTML)
     // console.log(convertedInput)
     console.log(val)
@@ -50,7 +51,6 @@ const hit = (val) => {
     // Check math symbols
     else if (arr.forEach(character => {
         if (val === character) {
-            let pattern = /\+|\-|\/|\*/g
             // if last input is empty
             if (lastinput.innerHTML === "") {
                 console.log("input is empty")
@@ -79,20 +79,53 @@ const hit = (val) => {
 
     // Decimal point
     else if (val === ".") {
-        input.innerHTML += val
+        // end is a symbol
+        if(isNaN(input.innerHTML[input.innerHTML.length-1])){
+            // symbol is not decimal
+            if(input.innerHTML[input.innerHTML.length-1] !== "."){
+                input.innerHTML+= "0"+val
+            }
+            else{
+                console.log("already decimal there") 
+            }
+        }
+        // end index at input has number
+        else{
+            let converted = input.innerHTML.replace(/\u00F7/g, "/")
+            converted = converted.replace(/\u00D7/g, "*")
+            let temp = converted.split(pattern)
+            console.log(temp)
+            // the end number already has decimal
+            if(temp[temp.length - 1].includes(".")){
+               console.log("already decimal there") 
+            }
+            else{
+                input.innerHTML += val
+            }
+        }
     }
 
     // Enter
     else if (val === "Enter" || val === "=") {
+        // if last input is empty
         if (convertedInput === "") {
             let temp = input.innerHTML.replace(/\u00F7/g, "/")
             temp = temp.replace(/\u00D7/g, "*")
             input.innerHTML = eval(temp)
         }
         else{
-            input.innerHTML = eval(convertedInput+input.innerHTML)
+            // if last input has symbol
+            if(isNaN(convertedInput)){
+                input.innerHTML = eval(convertedInput+input.innerHTML)
+                lastinput.innerHTML = ""
+            }
+            else{
+                input.innerHTML = eval(convertedInput)
+                lastinput.innerHTML = ""
+            }
         }
     }
+
     // Backspace
     else if (val === "Backspace") {
         if (input.innerHTML.length > 1) {
@@ -102,6 +135,7 @@ const hit = (val) => {
             input.innerHTML = "0"
         }
     }
+
     // Clear all
     else if(val==="Escape"){
         input.innerHTML = 0
@@ -195,8 +229,16 @@ btn[16].addEventListener("click", () => {
 btn[18].addEventListener("click", () => {
     hit(".")
 })
+btn[21].addEventListener("click", () => {
+    hit(".")
+})
+
 
 // Equal
 btn[22].addEventListener("click", () => {
     hit("Enter")
 })
+btn[23].addEventListener("click", () => {
+    hit("Enter")
+})
+
