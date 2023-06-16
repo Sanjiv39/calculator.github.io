@@ -106,14 +106,12 @@ const hit = (val) => {
                 console.log("already decimal there")
             }
         }
-        // end index at input has number
+        // end index at input is a number
         else {
-            let converted = input.innerHTML.replace(/\u00F7/g, "/")
-            converted = converted.replace(/\u00D7/g, "*")
-            let temp = converted.split(pattern)
-            console.log(temp)
+            x = temp.split(pattern)
+            console.log(x)
             // the end number already has decimal
-            if (temp[temp.length - 1].includes(".")) {
+            if (x[x.length - 1].includes(".")) {
                 console.log("already decimal there")
             }
             else {
