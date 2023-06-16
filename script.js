@@ -38,6 +38,8 @@ const hit = (val) => {
     let arr = ["+", "-", "/", "*"]
     let lastconverted = lastinput.innerHTML.replace(/\u00F7/g, "/")
     lastconverted = lastconverted.replace(/\u00D7/g, "*")
+    let temp = input.innerHTML.replace(/\u00F7/g, "/")
+    temp = temp.replace(/\u00D7/g, "*")
     let pattern = /\+|\-|\/|\*/g
     // console.log(input.innerHTML)
     // console.log(lastconverted)
@@ -51,14 +53,12 @@ const hit = (val) => {
     // Check math symbols
     else if (arr.forEach(character => {
         if (val === character) {
-            let temp = input.innerHTML.replace(/\u00F7/g, "/")
-            temp = temp.replace(/\u00D7/g, "*")
 
             // if last input is empty
             if (lastinput.innerHTML === "") {
                 console.log("input is empty")
                 // input has /0
-                if (eval(temp) == NaN || eval(temp)===Infinity) {
+                if (eval(temp) == NaN || eval(temp) === Infinity) {
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
                 else {
@@ -126,8 +126,6 @@ const hit = (val) => {
     else if (val === "Enter" || val === "=") {
         // if last input is empty
         if (lastconverted === "") {
-            let temp = input.innerHTML.replace(/\u00F7/g, "/")
-            temp = temp.replace(/\u00D7/g, "*")
             if (eval(temp) == NaN || eval(temp) === Infinity) {
                 alert("The result is heptic please clear all inputs and do a good math")
             }
