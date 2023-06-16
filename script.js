@@ -80,26 +80,26 @@ const hit = (val) => {
     // Decimal point
     else if (val === ".") {
         // end is a symbol
-        if(isNaN(input.innerHTML[input.innerHTML.length-1])){
+        if (isNaN(input.innerHTML[input.innerHTML.length - 1])) {
             // symbol is not decimal
-            if(input.innerHTML[input.innerHTML.length-1] !== "."){
-                input.innerHTML+= "0"+val
+            if (input.innerHTML[input.innerHTML.length - 1] !== ".") {
+                input.innerHTML += "0" + val
             }
-            else{
-                console.log("already decimal there") 
+            else {
+                console.log("already decimal there")
             }
         }
         // end index at input has number
-        else{
+        else {
             let converted = input.innerHTML.replace(/\u00F7/g, "/")
             converted = converted.replace(/\u00D7/g, "*")
             let temp = converted.split(pattern)
             console.log(temp)
             // the end number already has decimal
-            if(temp[temp.length - 1].includes(".")){
-               console.log("already decimal there") 
+            if (temp[temp.length - 1].includes(".")) {
+                console.log("already decimal there")
             }
-            else{
+            else {
                 input.innerHTML += val
             }
         }
@@ -111,15 +111,20 @@ const hit = (val) => {
         if (convertedInput === "") {
             let temp = input.innerHTML.replace(/\u00F7/g, "/")
             temp = temp.replace(/\u00D7/g, "*")
-            input.innerHTML = eval(temp)
+            if (temp.includes("/0")) { alert("The result is heptic please clear all inputs and do a good math") }
+            else { input.innerHTML = eval(temp) }
         }
-        else{
+        else {
             // if last input has symbol
-            if(isNaN(convertedInput)){
-                input.innerHTML = eval(convertedInput+input.innerHTML)
-                lastinput.innerHTML = ""
+            if (isNaN(convertedInput)) {
+                if ((convertedInput + input.innerHTML).includes("/0")) { alert("The result is heptic please clear all inputs and do a good math") }
+
+                else {
+                    input.innerHTML = eval(convertedInput + input.innerHTML)
+                    lastinput.innerHTML = ""
+                }
             }
-            else{
+            else {
                 input.innerHTML = eval(convertedInput)
                 lastinput.innerHTML = ""
             }
@@ -137,7 +142,7 @@ const hit = (val) => {
     }
 
     // Clear all
-    else if(val==="Escape"){
+    else if (val === "Escape") {
         input.innerHTML = 0
         lastinput.innerHTML = ""
     }
@@ -150,10 +155,10 @@ lastinput.addEventListener('animationend', () => { lastinput.classList.remove("s
 
 // Key press events -------------------------------------------------------------------------------------------------------------
 window.addEventListener('keydown', (event) => {
-    if(event.key === " "){
+    if (event.key === " ") {
         event.preventDefault();
     }
-    else{hit(event.key)}
+    else { hit(event.key) }
 })
 
 // Click events -----------------------------------------------------------------------------------------------------------------
