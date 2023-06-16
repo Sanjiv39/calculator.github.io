@@ -36,11 +36,11 @@ const finalconvert = (str) => {
 // Click and Hit handler
 const hit = (val) => {
     let arr = ["+", "-", "/", "*"]
-    let convertedInput = lastinput.innerHTML.replace(/\u00F7/g, "/")
-    convertedInput = convertedInput.replace(/\u00D7/g, "*")
+    let lastconverted = lastinput.innerHTML.replace(/\u00F7/g, "/")
+    lastconverted = lastconverted.replace(/\u00D7/g, "*")
     let pattern = /\+|\-|\/|\*/g
     // console.log(input.innerHTML)
-    // console.log(convertedInput)
+    // console.log(lastconverted)
     console.log(val)
 
     // Check for numbers
@@ -51,25 +51,42 @@ const hit = (val) => {
     // Check math symbols
     else if (arr.forEach(character => {
         if (val === character) {
+            let temp = input.innerHTML.replace(/\u00F7/g, "/")
+            temp = temp.replace(/\u00D7/g, "*")
+
             // if last input is empty
             if (lastinput.innerHTML === "") {
                 console.log("input is empty")
-                lastinput.innerHTML = input.innerHTML + finalconvert(val)
-                input.innerHTML = "0"
+                // input has /0
+                if (eval(temp) == NaN || eval(temp)===Infinity) {
+                    alert("The result is heptic please clear all inputs and do a good math")
+                }
+                else {
+                    lastinput.innerHTML = input.innerHTML + finalconvert(val)
+                    input.innerHTML = "0"
+                }
             }
+            // last input is not empty
             else {
                 // if last input is a number
-                if (isNaN(convertedInput[convertedInput.length - 1]) === false) {
+                if (isNaN(lastconverted[lastconverted.length - 1]) === false) {
+                    lastinput.innerHTML = finalconvert(val)
                 }
                 // last is symbol
                 else {
                     console.log("last symbol")
-                    if (input.innerHTML === "0") {
-                        lastinput.innerHTML = finalconvert(convertedInput.slice(0, convertedInput.length - 1) + val)
+                    // check for /0
+                    if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
+                        alert("The result is heptic please clear all inputs and do a good math")
                     }
                     else {
-                        lastinput.innerHTML = finalconvert(eval(convertedInput + input.innerHTML).toString() + val);
-                        input.innerHTML = "0"
+                        if (input.innerHTML === "0") {
+                            lastinput.innerHTML = finalconvert(lastconverted.slice(0, lastconverted.length - 1) + val)
+                        }
+                        else {
+                            lastinput.innerHTML = finalconvert(eval(lastconverted + input.innerHTML).toString() + val);
+                            input.innerHTML = "0"
+                        }
                     }
                 }
             }
@@ -108,24 +125,29 @@ const hit = (val) => {
     // Enter
     else if (val === "Enter" || val === "=") {
         // if last input is empty
-        if (convertedInput === "") {
+        if (lastconverted === "") {
             let temp = input.innerHTML.replace(/\u00F7/g, "/")
             temp = temp.replace(/\u00D7/g, "*")
-            if (temp.includes("/0")) { alert("The result is heptic please clear all inputs and do a good math") }
+            if (eval(temp) == NaN || eval(temp) === Infinity) {
+                alert("The result is heptic please clear all inputs and do a good math")
+            }
             else { input.innerHTML = eval(temp) }
         }
         else {
             // if last input has symbol
-            if (isNaN(convertedInput)) {
-                if ((convertedInput + input.innerHTML).includes("/0")) { alert("The result is heptic please clear all inputs and do a good math") }
-
+            if (isNaN(lastconverted)) {
+                // the 0/0 
+                if (eval(lastconverted + input.innerHTML) === NaN) {
+                    alert("The result is heptic please clear all inputs and do a good math")
+                }
                 else {
-                    input.innerHTML = eval(convertedInput + input.innerHTML)
+                    input.innerHTML = eval(lastconverted + input.innerHTML)
                     lastinput.innerHTML = ""
                 }
             }
+            // last input
             else {
-                input.innerHTML = eval(convertedInput)
+                input.innerHTML = eval(lastconverted)
                 lastinput.innerHTML = ""
             }
         }
