@@ -136,8 +136,8 @@ const hit = (val) => {
         else {
             // if last input has symbol
             if (isNaN(lastconverted)) {
-                // the 0/0 
-                if (eval(lastconverted + input.innerHTML) === NaN) {
+                // the /0 
+                if (eval(lastconverted + input.innerHTML) === NaN || eval(lastconverted + input.innerHTML) === Infinity) {
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
                 else {
