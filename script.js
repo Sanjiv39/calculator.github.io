@@ -1,17 +1,50 @@
 const btn = document.getElementsByClassName("button")
+const input = document.getElementById("current-input")
+const lastinput = document.getElementById("last-input")
+const copy = document.getElementById("copy-msg")
 console.log(btn)
 
 // U T I L S---------------------------------------------------------------------------------------------
 const sleep = async () => {
-    setTimeout(() => { }, 400);
+    setTimeout(() => { }, 2000);
 }
-const input = document.getElementById("current-input")
-const lastinput = document.getElementById("last-input")
 
 // Clear All
 btn[0].addEventListener("click", () => {
     input.innerHTML = 0
     lastinput.innerHTML = ""
+})
+
+// Copy to clipboard 
+btn[1].addEventListener("click", async () => {
+    if (navigator.clipboard !== undefined) {
+        navigator.clipboard.writeText(input.innerHTML);
+    }
+    else { // for http connection
+        box.focus()
+        box.select()
+        try {
+            document.execCommand('copy');
+        } catch (err) {
+            console.error('Unable to copy to clipboard', err);
+        }
+        box.setSelectionRange(input.innerHTML.length, input.innerHTML.length) // set cursor on last position
+    }
+    copy.innerHTML = "Copied to clipboard"
+})
+btn[1].addEventListener("mouseenter", ()=>{
+    console.log("mouseover")
+    copy.style.display = "block"
+})
+btn[1].addEventListener("mouseleave", ()=>{
+    console.log("mouseover")
+    copy.style.display = "none"
+    copy.innerHTML = "Copy to clipboard"
+})
+btn[1].addEventListener("blur", ()=>{
+    console.log("mouseover")
+    copy.style.display = "none"
+    copy.innerHTML = "Copy to clipboard"
 })
 
 // Add the number
@@ -203,10 +236,12 @@ const hit = (val) => {
                 }
                 // % in last input 
                 else if(lastconverted.includes("%")){
+                    console.log("Last input has %")
                     input.innerHTML = percent(lastconverted+temp)
                     lastinput.innerHTML = ""
                 }
                 else {
+                    console.log("normal symbols")
                     input.innerHTML = eval(lastconverted + input.innerHTML)
                     lastinput.innerHTML = ""
                 }
