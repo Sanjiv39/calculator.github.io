@@ -1,4 +1,10 @@
 <div align="center">
+  <img src="./readme.svg" alt="Main">
+</div>
+
+<!--  -->
+
+<div align="center">
   <h1>Calculator Using HTML, CSS, JS</h1>
   <hr>
   <h3><a href='https://sanjiv39.github.io/calculator.github.io/'>See Live Preview</a></h3>
