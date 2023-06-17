@@ -62,31 +62,30 @@ const hit = (val) => {
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
                 else {
-                    lastinput.innerHTML = input.innerHTML + finalconvert(val)
+                    lastinput.innerHTML = eval(input.innerHTML) + finalconvert(val)
                     input.innerHTML = "0"
                 }
             }
             // last input is not empty
             else {
-                // if last input is a number
+                // if last input end is a number
                 if (isNaN(lastconverted[lastconverted.length - 1]) === false) {
-                    lastinput.innerHTML = finalconvert(val)
+                    lastinput.innerHTML += finalconvert(val)
                 }
                 // last is symbol
                 else {
                     console.log("last symbol")
+                    // input is 0
+                    if(eval(input.innerHTML)===0){
+                        lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val)
+                    }
                     // check for /0
-                    if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
+                    else if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
                         alert("The result is heptic please clear all inputs and do a good math")
                     }
                     else {
-                        if (input.innerHTML === "0") {
-                            lastinput.innerHTML = finalconvert(lastconverted.slice(0, lastconverted.length - 1) + val)
-                        }
-                        else {
                             lastinput.innerHTML = finalconvert(eval(lastconverted + input.innerHTML).toString() + val);
                             input.innerHTML = "0"
-                        }
                     }
                 }
             }
