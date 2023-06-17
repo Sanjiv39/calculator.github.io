@@ -67,6 +67,10 @@ const hit = (val) => {
                 if (eval(temp) == NaN || eval(temp) === Infinity) {
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
+                // input has %
+                else if(temp.includes("%")){
+                    lastinput.innerHTML = percent(temp)
+                }
                 else {
                     lastinput.innerHTML = eval(input.innerHTML) + finalconvert(val)
                     input.innerHTML = "0"
@@ -78,16 +82,21 @@ const hit = (val) => {
                 if (isNaN(lastconverted[lastconverted.length - 1]) === false) {
                     lastinput.innerHTML += finalconvert(val)
                 }
-                // last is symbol
+                // last input end is symbol
                 else {
                     console.log("last symbol")
-                    // input is 0
+                    // input is 0 the replace symbol
                     if(eval(input.innerHTML)===0){
                         lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val)
                     }
                     // check for /0
                     else if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
                         alert("The result is heptic please clear all inputs and do a good math")
+                    }
+                    // % at end
+                    else if((lastconverted+temp).includes("%")){
+                        lastinput.innerHTML = percent(lastconverted+temp) + finalconvert(val)
+                        input.innerHTML = "0"
                     }
                     else {
                             lastinput.innerHTML = finalconvert(eval(lastconverted + input.innerHTML).toString() + val);
@@ -109,13 +118,15 @@ const hit = (val) => {
         }
         else{
             // last input end is symbol then replace
-            if(isNaN(lastconverted)){
+            if(isNaN(lastconverted[lastconverted.length-1])){
                 lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val);
             }
+            // last input end is number
             else{
                 lastinput.innerHTML += finalconvert(val);
             }
         }
+        lastinput.classList.add("slide")
         input.innerHTML = "0"
     }
 
