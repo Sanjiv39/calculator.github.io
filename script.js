@@ -1,7 +1,7 @@
 const btn = document.getElementsByClassName("button")
 console.log(btn)
 
-// U T I L S---------------------------------------------------------------------------------------------------------------------
+// U T I L S---------------------------------------------------------------------------------------------
 const sleep = async () => {
     setTimeout(() => { }, 400);
 }
@@ -33,6 +33,13 @@ const finalconvert = (str) => {
     return str
 }
 
+// % function
+const percent = (str) =>{
+    let arr = str.split("%")
+    let result = parseFloat(arr[0])*(parseFloat(arr[1])/100)
+    return result
+}
+
 // Click and Hit handler
 const hit = (val) => {
     let arr = ["+", "-", "/", "*"]
@@ -53,7 +60,6 @@ const hit = (val) => {
     // Check math symbols
     else if (arr.forEach(character => {
         if (val === character) {
-
             // if last input is empty
             if (lastinput.innerHTML === "") {
                 console.log("input is empty")
@@ -92,6 +98,26 @@ const hit = (val) => {
             lastinput.classList.add("slide")
         }
     }));
+
+    // Percentage
+    else if(val === "%"){
+        // if input is empty
+        if(lastconverted === ""){
+            // if input has %
+            if(temp.includes("%")){lastinput.innerHTML = percent(temp)}
+            else{lastinput.innerHTML = finalconvert(eval(temp).toString() + val);}
+        }
+        else{
+            // last input end is symbol then replace
+            if(isNaN(lastconverted)){
+                lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val);
+            }
+            else{
+                lastinput.innerHTML += finalconvert(val);
+            }
+        }
+        input.innerHTML = "0"
+    }
 
     // Decimal point
     else if (val === ".") {
@@ -245,6 +271,11 @@ btn[15].addEventListener("click", () => {
 // Plus
 btn[16].addEventListener("click", () => {
     hit("+")
+})
+
+// Percentage
+btn[2].addEventListener("click", () => {
+    hit("%")
 })
 
 // Decimal
