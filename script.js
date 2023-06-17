@@ -117,8 +117,8 @@ const hit = (val) => {
             else{lastinput.innerHTML = finalconvert(eval(temp).toString() + val);}
         }
         else{
-            // last input end is symbol then replace
-            if(isNaN(lastconverted[lastconverted.length-1])){
+            // last input end is symbol or input is 0 then replace
+            if(isNaN(lastconverted[lastconverted.length-1]) || eval(temp)===0){
                 lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val);
             }
             // last input end is number
@@ -130,11 +130,35 @@ const hit = (val) => {
         input.innerHTML = "0"
     }
 
+    // Plus or minus
+    else if (val === "plus-minus"){
+        // if last input is empty
+        if(lastconverted === ""){
+            lastinput.innerHTML = "0+"
+        }
+        // last input has symbol at end
+        else if(isNaN(lastconverted[lastconverted.length - 1])){
+            let x = lastconverted[length - 1]
+            let cut = finalconvert(lastconverted.slice(0, lastconverted.length-1))
+            // end is "+"
+            if(x === "+"){
+                lastinput.innerHTML = cut + "-"
+            }
+            else {
+                lastinput.innerHTML = cut + "+"
+            }
+        }
+        // last input has number at end
+        else{
+            lastinput.innerHTML = finalconvert(lastconverted) + "+"
+        }
+    }
+
     // Decimal point
     else if (val === ".") {
-        // end is a symbol
+        // input end is a symbol
         if (isNaN(input.innerHTML[input.innerHTML.length - 1])) {
-            // symbol is not decimal
+            // end symbol is not decimal then add
             if (input.innerHTML[input.innerHTML.length - 1] !== ".") {
                 input.innerHTML += "0" + val
             }
@@ -163,21 +187,31 @@ const hit = (val) => {
             if (eval(temp) == NaN || eval(temp) === Infinity) {
                 alert("The result is heptic please clear all inputs and do a good math")
             }
+            // input has %
+            else if(temp.includes("%")){
+                input.innerHTML = percent(temp)
+            }
             else { input.innerHTML = eval(temp) }
         }
+        // last input not empty
         else {
             // if last input has symbol
             if (isNaN(lastconverted)) {
                 // the /0 
-                if (eval(lastconverted + input.innerHTML) === NaN || eval(lastconverted + input.innerHTML) === Infinity) {
+                if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
                     alert("The result is heptic please clear all inputs and do a good math")
+                }
+                // % in last input 
+                else if(lastconverted.includes("%")){
+                    input.innerHTML = percent(lastconverted+temp)
+                    lastinput.innerHTML = ""
                 }
                 else {
                     input.innerHTML = eval(lastconverted + input.innerHTML)
                     lastinput.innerHTML = ""
                 }
             }
-            // last input
+            // last input copy if no symbol at end of it
             else {
                 input.innerHTML = eval(lastconverted)
                 lastinput.innerHTML = ""
@@ -282,6 +316,14 @@ btn[15].addEventListener("click", () => {
 // Plus
 btn[16].addEventListener("click", () => {
     hit("+")
+})
+
+// Plus - Minus
+btn[17].addEventListener("click", () => {
+    hit("plus-minus")
+})
+btn[19].addEventListener("click", () => {
+    hit("plus-minus")
 })
 
 // Percentage
