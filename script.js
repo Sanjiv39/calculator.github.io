@@ -62,25 +62,35 @@ const addnumber = (num) => {
 
 // Calculation handler
 const calc = (str) => {
-    let arr = eval(str).toString().split(".")
-    let res = ""
-    let temp = arr[1]
-    console.log(arr[1])
-    // More than 5 digits after decimal
-    if(temp.length>10){
-        let x = 2
-        for(let i = 2; i < 10; i++){
-            if(temp[i]===temp[i-1]){}
-            else{
-                x = i
+    str = eval(str).toString()
+    if (str.includes(".")) {
+        let arr = eval(str).toString().split(".")
+        let res = ""
+        let temp = arr[1]
+        console.log(arr[1])
+        // More than 5 digits after decimal
+        if (temp.length > 10) {
+            // initially assume that decimal has recursive digits
+            let x = 2
+            // lets see if decimal is having limited precision and will end at some place
+            for (let i = 2; i < 10; i++) {
+                if (temp[i] === temp[i - 1]) { }
+                // 
+                else {
+                    x = i;
+                    break;
+                }
             }
+            temp = temp.slice(0, x) + "." + temp.slice(x, temp.length)
+            temp = Math.round(temp)
         }
-        temp = temp.slice(0, x) + "." + temp.slice(x, temp.length)
-        temp = Math.round(temp)
+        res = arr[0] + "." + temp
+        res = eval(res).toString()
+        return res
     }
-    res = arr[0] + "." + temp
-    res = eval(res).toString()
-    return res
+    else{
+        return str
+    }
 }
 
 // Handlers ---------------------------------------------------------------------------------------------------------------------
@@ -93,7 +103,7 @@ const finalconvert = (str) => {
 // % function
 const percent = (str) => {
     let arr = str.split("%")
-    let result = parseFloat(arr[0]) * (parseFloat(arr[1]) / 100)
+    let result = (parseFloat(arr[0]) * (parseFloat(arr[1]) / 100)).toString()
     return result
 }
 
@@ -118,15 +128,15 @@ const hit = (val) => {
             if (lastinput.innerHTML === "") {
                 console.log("input is empty")
                 // input has /0
-                if (eval(temp) == NaN || eval(temp) === Infinity) {
+                if (calc(temp) == "NaN" || calc(temp) === "Infinity") {
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
                 // input has %
                 else if (temp.includes("%")) {
-                    lastinput.innerHTML = percent(temp)
+                    lastinput.innerHTML = calc(percent(temp))
                 }
                 else {
-                    lastinput.innerHTML = eval(input.innerHTML) + finalconvert(val)
+                    lastinput.innerHTML = calc(temp) + finalconvert(val)
                     input.innerHTML = "0"
                 }
             }
@@ -140,20 +150,20 @@ const hit = (val) => {
                 else {
                     console.log("last symbol")
                     // input is 0 the replace symbol
-                    if (eval(input.innerHTML) === 0) {
-                        lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length - 1) + finalconvert(val)
+                    if (calc(temp) === "0") {
+                        lastinput.innerHTML = lastconverted.slice(0, lastconverted.length - 1) + finalconvert(val)
                     }
                     // check for /0
-                    else if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
+                    else if (calc(lastconverted + temp) === "NaN" || calc(lastconverted + temp) === "Infinity") {
                         alert("The result is heptic please clear all inputs and do a good math")
                     }
                     // % at end
                     else if ((lastconverted + temp).includes("%")) {
-                        lastinput.innerHTML = percent(lastconverted + temp) + finalconvert(val)
+                        lastinput.innerHTML = calc(percent(lastconverted + temp)) + finalconvert(val)
                         input.innerHTML = "0"
                     }
                     else {
-                        lastinput.innerHTML = finalconvert(eval(lastconverted + input.innerHTML).toString() + val);
+                        lastinput.innerHTML = finalconvert(calc(lastconverted + temp) + val);
                         input.innerHTML = "0"
                     }
                 }
@@ -167,13 +177,13 @@ const hit = (val) => {
         // if input is empty
         if (lastconverted === "") {
             // if input has %
-            if (temp.includes("%")) { lastinput.innerHTML = percent(temp) }
-            else { lastinput.innerHTML = finalconvert(eval(temp).toString() + val); }
+            if (temp.includes("%")) { lastinput.innerHTML = calc(percent(temp)) }
+            else { lastinput.innerHTML = finalconvert(calc(temp) + val); }
         }
         else {
             // last input end is symbol or input is 0 then replace
-            if (isNaN(lastconverted[lastconverted.length - 1]) || eval(temp) === 0) {
-                lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length - 1) + finalconvert(val);
+            if (isNaN(lastconverted[lastconverted.length - 1]) || calc(temp) === "0") {
+                lastinput.innerHTML = lastconverted.slice(0, lastconverted.length - 1) + finalconvert(val);
             }
             // last input end is number
             else {
@@ -188,7 +198,7 @@ const hit = (val) => {
     else if (val === "plus-minus") {
         // if last input is empty
         if (lastconverted === "") {
-            lastinput.innerHTML = eval(temp) + "+"
+            lastinput.innerHTML = calc(temp) + "+"
         }
         // last input has symbol at end
         else if (isNaN(lastconverted[lastconverted.length - 1])) {
@@ -264,7 +274,7 @@ const hit = (val) => {
                 }
                 else {
                     // 0/0
-                    if (lastconverted[lastconverted.length - 1]==="/" && eval(temp) == 0) {
+                    if (lastconverted[lastconverted.length - 1] === "/" && eval(temp) == 0) {
                         alert("The result is heptic please clear all inputs and do a good math")
                     }
                     else {
