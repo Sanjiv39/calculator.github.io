@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -18,6 +19,7 @@ body {
     position: relative;
     font-family: 'Poppins', sans-serif;
     cursor: default;
+    overflow-x: hidden;
 }
 
 button {
@@ -26,7 +28,8 @@ button {
     outline: none;
     cursor: pointer;
     background: transparent;
-    font-family: 'Poppins', sans-serif;;
+    font-family: 'Poppins', sans-serif;
+    ;
 }
 
 button img {
@@ -43,11 +46,65 @@ input {
     border: inherit;
     background-color: inherit;
     outline: none;
-    font-family: 'Poppins', sans-serif;;
+    font-family: 'Poppins', sans-serif;
+    ;
 }
 
 ul {
     list-style: none;
+}
+
+/* Alert Box */
+.alert-box {
+    position: absolute;
+    top: 10vh;
+    left: -100%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    min-width: 200px;
+    max-width: 90vw;
+    text-align: center;
+    font-size: 20px;
+    background-color: rgb(251, 74, 74);
+    border-radius: 20px;
+    padding: 5px 10px;
+    color: white;
+    z-index: 10;
+}
+
+.alert-box.alert-now {
+    animation: alert 0.6s ease-in-out;
+}
+
+@keyframes alert {
+    from {
+        left: -100%;
+    }
+    90%{
+        left: -100%;
+    }
+    to {
+        left: 50%;
+    }
+}
+
+.alert-box.hide-now {
+    animation: hider 5s ease-in-out ;
+}
+
+@keyframes hider {
+    from{
+        top: 10vh;
+        left: 50%;
+    }
+    90% {
+        top: 10vh;
+        left: 50%;
+    }
+    to {
+        top: -100vh;
+        left: 50%;
+    }
 }
 
 /* Main Container */
@@ -91,7 +148,7 @@ ul {
     flex-basis: 30%;
     width: 100%;
     padding: 5px;
-    margin: 10px ;
+    margin: 10px;
     position: relative;
 }
 
@@ -128,7 +185,7 @@ ul {
     /* animation: slideup 300ms ease-in-out infinite; */
 }
 
-.slide{
+.slide {
     animation: slideup 300ms ease-in-out;
 }
 
@@ -178,12 +235,13 @@ ul {
     overflow-y: hidden;
 }
 
-*::-webkit-scrollbar{
+*::-webkit-scrollbar {
     position: relative;
     height: 5px;
     border-radius: 10px;
 }
-*::-webkit-scrollbar-thumb{
+
+*::-webkit-scrollbar-thumb {
     background-color: blue;
     border-radius: 10px;
 }
@@ -226,7 +284,8 @@ ul {
     grid-row: span 1;
     position: relative;
 }
-.button img{
+
+.button img {
     margin: auto;
     height: 30px;
     width: 30px;
@@ -236,7 +295,7 @@ ul {
     transform: translate(-50%, -50%);
 }
 
-#copy-msg{
+#copy-msg {
     display: none;
     z-index: 5;
     position: absolute;
@@ -246,26 +305,33 @@ ul {
     background-color: rgb(0, 68, 255);
     border-radius: 10px;
 }
-.button-container button:hover{
+
+.button-container button:hover {
     opacity: 0.6;
 }
+
 .button-container>button {
     display: none;
 }
-.button:active{
+
+.button:active {
     animation: fader 200ms ease-in-out;
 }
+
 @keyframes fader {
-    from{
+    from {
         opacity: 0.8;
     }
-    50%{
+
+    50% {
         opacity: 0.5;
     }
-    to{
+
+    to {
         opacity: 1;
     }
 }
+
 .button:active div {
     animation: shrink 200ms ease-in-out;
 }
@@ -274,13 +340,16 @@ ul {
     from {
         transform: scale(1);
     }
+
     50% {
         transform: scale(0.5);
     }
+
     to {
         transform: scale(1);
     }
 }
+
 .left-buttons,
 .right-buttons,
 .last-buttons {
@@ -322,21 +391,25 @@ ul {
 /* Media Query */
 
 @media screen and (max-width:660px) {
-    ::-webkit-scrollbar{
+    ::-webkit-scrollbar {
         height: 2px;
     }
+
     .container {
         height: 90vh;
         width: 95vw;
         /* top: 10px;
         transform: translateY(0%); */
     }
-    .top-container{
+
+    .top-container {
         flex-basis: 20%;
     }
-    .last-input{
+
+    .last-input {
         height: 50px;
     }
+
     .button-container {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(6, 1fr);
@@ -349,7 +422,8 @@ ul {
         clip-path: circle();
         background-color: rgb(0, 157, 255);
     }
-    .button-container button div{
+
+    .button-container button div {
         width: inherit;
         height: inherit;
         /* clip-path: circle(); */
@@ -361,9 +435,11 @@ ul {
         clip-path: none;
         grid-column: span 4;
     }
-    .button-container button:hover{
+
+    .button-container button:hover {
         opacity: 1;
     }
+
     .right-buttons {
         grid-row: span 5;
         grid-column: span 1;

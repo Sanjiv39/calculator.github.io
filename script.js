@@ -2,6 +2,7 @@ const btn = document.getElementsByClassName("button")
 const input = document.getElementById("current-input")
 const lastinput = document.getElementById("last-input")
 const copy = document.getElementById("copy-msg")
+const alertbox = document.getElementById("alert")
 console.log(btn)
 
 // U T I L S---------------------------------------------------------------------------------------------
@@ -60,6 +61,8 @@ const addnumber = (num) => {
     }
 }
 
+// Handlers ---------------------------------------------------------------------------------------------------------------------
+
 // Calculation handler
 const calc = (str) => {
     str = eval(str).toString()
@@ -93,12 +96,30 @@ const calc = (str) => {
     }
 }
 
-// Handlers ---------------------------------------------------------------------------------------------------------------------
+// String update with 16-bit unicode characters
 const finalconvert = (str) => {
     str = str.replaceAll("/", "\u00F7")
     str = str.replaceAll("*", "\u00D7")
     return str
 }
+
+// Alert messager
+const pushalert = (str) => {
+    alertbox.innerHTML = str
+    alertbox.classList.remove("alert-now")
+    alertbox.classList.remove("hide-now")
+    alertbox.classList.add("alert-now")
+}
+alertbox.addEventListener("animationend", () => {
+    if(alertbox.classList.value.includes("alert-now")){
+        alertbox.classList.add("hide-now")
+        alertbox.classList.remove("alert-now")
+    }
+    else if(alertbox.classList.value.includes("hide-now")){
+        alertbox.classList.remove("hide-now")
+    }
+})
+
 
 // % function
 const percent = (str) => {
@@ -129,7 +150,7 @@ const hit = (val) => {
                 console.log("input is empty")
                 // input has /0
                 if (calc(temp) == "NaN" || calc(temp) === "Infinity") {
-                    alert("The result is heptic please clear all inputs and do a good math")
+                    pushalert("Cannot divide by 0 ...... so please change input and math symbol")
                 }
                 // input has %
                 else if (temp.includes("%")) {
@@ -155,7 +176,7 @@ const hit = (val) => {
                     }
                     // check for /0
                     else if (calc(lastconverted + temp) === "NaN" || calc(lastconverted + temp) === "Infinity") {
-                        alert("The result is heptic please clear all inputs and do a good math")
+                        pushalert("Cannot divide by 0 ...... so please change input and math symbol")
                     }
                     // % at end
                     else if ((lastconverted + temp).includes("%")) {
@@ -221,9 +242,9 @@ const hit = (val) => {
     // Decimal point
     else if (val === ".") {
         // input end is a symbol
-        if (isNaN(input.innerHTML[input.innerHTML.length - 1])) {
+        if (isNaN(temp[temp.length - 1])) {
             // end symbol is not decimal then add
-            if (input.innerHTML[input.innerHTML.length - 1] !== ".") {
+            if (temp[temp.length - 1] !== ".") {
                 input.innerHTML += "0" + val
             }
             else {
@@ -248,45 +269,45 @@ const hit = (val) => {
     else if (val === "Enter" || val === "=") {
         // if last input is empty
         if (lastconverted === "") {
-            if (eval(temp) == NaN || eval(temp) === Infinity) {
+            if (calc(temp) === "NaN" || calc(temp) === "Infinity") {
                 alert("The result is heptic please clear all inputs and do a good math")
             }
             // input has %
             else if (temp.includes("%")) {
-                input.innerHTML = percent(temp)
+                input.innerHTML = calc(percent(temp))
             }
-            else { input.innerHTML = eval(temp) }
+            else { input.innerHTML = calc(temp) }
         }
         // last input not empty
         else {
             // if last input has symbol
             if (isNaN(lastconverted[lastconverted.length - 1])) {
                 // the /0 
-                if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
+                if (calc(lastconverted + temp) === "NaN" || calc(lastconverted + temp) === "Infinity") {
                     console.log("/0 Entered")
-                    alert("The result is heptic please clear all inputs and do a good math")
+                    pushalert("Cannot divide by 0 ...... so please change input and math symbol")
                 }
                 // % in last input 
                 else if (lastconverted.includes("%")) {
                     console.log("Last input has %")
-                    input.innerHTML = percent(lastconverted + temp)
+                    input.innerHTML = calc(percent(lastconverted + temp))
                     lastinput.innerHTML = ""
                 }
                 else {
                     // 0/0
-                    if (lastconverted[lastconverted.length - 1] === "/" && eval(temp) == 0) {
-                        alert("The result is heptic please clear all inputs and do a good math")
+                    if (lastconverted[lastconverted.length - 1] === "/" && calc(temp) === "0") {
+                        pushalert("Cannot divide by 0 ...... so please change input and math symbol")
                     }
                     else {
                         console.log("normal symbols")
-                        input.innerHTML = eval(lastconverted + temp)
+                        input.innerHTML = calc(lastconverted + temp)
                         lastinput.innerHTML = ""
                     }
                 }
             }
             // last input copy if no symbol at end of it
             else {
-                input.innerHTML = eval(lastconverted)
+                input.innerHTML = calc(lastconverted)
                 lastinput.innerHTML = ""
             }
         }
@@ -328,13 +349,6 @@ window.addEventListener('keydown', (event) => {
     else if (event.key === 'c' && event.ctrlKey === true) {
         async () => {
             btn[1].click()
-            copy.style.display = "block"
-            copy.innerHTML = "Copied to clipboard \u2713"
-            const copyhit = () => {
-                copy.style.display = "none"
-                copy.innerHTML = "Copy to Clipboard"
-            }
-            await sleep(copyhit)
         }
     }
     else { hit(event.key) }
