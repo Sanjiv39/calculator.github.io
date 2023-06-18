@@ -5,8 +5,8 @@ const copy = document.getElementById("copy-msg")
 console.log(btn)
 
 // U T I L S---------------------------------------------------------------------------------------------
-const sleep = async () => {
-    setTimeout(() => { }, 2000);
+const sleep = async (e) => {
+    setTimeout(e(), 2000);
 }
 
 // Clear All
@@ -30,22 +30,23 @@ btn[1].addEventListener("click", async () => {
         }
         box.setSelectionRange(input.innerHTML.length, input.innerHTML.length) // set cursor on last position
     }
-    copy.innerHTML = "Copied to clipboard"
+    copy.innerHTML = "Copied to clipboard \u2713"
 })
-btn[1].addEventListener("mouseenter", ()=>{
-    console.log("mouseover")
+btn[1].addEventListener("mouseenter", () => {
+    // console.log("mouseover")
     copy.style.display = "block"
 })
-btn[1].addEventListener("mouseleave", ()=>{
-    console.log("mouseover")
+btn[1].addEventListener("mouseleave", () => {
+    // console.log("mouseover")
     copy.style.display = "none"
     copy.innerHTML = "Copy to clipboard"
 })
-btn[1].addEventListener("blur", ()=>{
-    console.log("mouseover")
+btn[1].addEventListener("blur", () => {
+    // console.log("mouseover")
     copy.style.display = "none"
     copy.innerHTML = "Copy to clipboard"
 })
+
 
 // Add the number
 const addnumber = (num) => {
@@ -59,6 +60,29 @@ const addnumber = (num) => {
     }
 }
 
+// Calculation handler
+const calc = (str) => {
+    let arr = eval(str).toString().split(".")
+    let res = ""
+    let temp = arr[1]
+    console.log(arr[1])
+    // More than 5 digits after decimal
+    if(temp.length>10){
+        let x = 2
+        for(let i = 2; i < 10; i++){
+            if(temp[i]===temp[i-1]){}
+            else{
+                x = i
+            }
+        }
+        temp = temp.slice(0, x) + "." + temp.slice(x, temp.length)
+        temp = Math.round(temp)
+    }
+    res = arr[0] + "." + temp
+    res = eval(res).toString()
+    return res
+}
+
 // Handlers ---------------------------------------------------------------------------------------------------------------------
 const finalconvert = (str) => {
     str = str.replaceAll("/", "\u00F7")
@@ -67,9 +91,9 @@ const finalconvert = (str) => {
 }
 
 // % function
-const percent = (str) =>{
+const percent = (str) => {
     let arr = str.split("%")
-    let result = parseFloat(arr[0])*(parseFloat(arr[1])/100)
+    let result = parseFloat(arr[0]) * (parseFloat(arr[1]) / 100)
     return result
 }
 
@@ -81,9 +105,6 @@ const hit = (val) => {
     let temp = input.innerHTML.replace(/\u00F7/g, "/")
     temp = temp.replace(/\u00D7/g, "*")
     let pattern = /\+|\-|\/|\*/g
-    // console.log(input.innerHTML)
-    // console.log(lastconverted)
-    console.log(val)
 
     // Check for numbers
     if (isNaN(val) === false) {
@@ -101,7 +122,7 @@ const hit = (val) => {
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
                 // input has %
-                else if(temp.includes("%")){
+                else if (temp.includes("%")) {
                     lastinput.innerHTML = percent(temp)
                 }
                 else {
@@ -119,21 +140,21 @@ const hit = (val) => {
                 else {
                     console.log("last symbol")
                     // input is 0 the replace symbol
-                    if(eval(input.innerHTML)===0){
-                        lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val)
+                    if (eval(input.innerHTML) === 0) {
+                        lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length - 1) + finalconvert(val)
                     }
                     // check for /0
                     else if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
                         alert("The result is heptic please clear all inputs and do a good math")
                     }
                     // % at end
-                    else if((lastconverted+temp).includes("%")){
-                        lastinput.innerHTML = percent(lastconverted+temp) + finalconvert(val)
+                    else if ((lastconverted + temp).includes("%")) {
+                        lastinput.innerHTML = percent(lastconverted + temp) + finalconvert(val)
                         input.innerHTML = "0"
                     }
                     else {
-                            lastinput.innerHTML = finalconvert(eval(lastconverted + input.innerHTML).toString() + val);
-                            input.innerHTML = "0"
+                        lastinput.innerHTML = finalconvert(eval(lastconverted + input.innerHTML).toString() + val);
+                        input.innerHTML = "0"
                     }
                 }
             }
@@ -142,20 +163,20 @@ const hit = (val) => {
     }));
 
     // Percentage
-    else if(val === "%"){
+    else if (val === "%") {
         // if input is empty
-        if(lastconverted === ""){
+        if (lastconverted === "") {
             // if input has %
-            if(temp.includes("%")){lastinput.innerHTML = percent(temp)}
-            else{lastinput.innerHTML = finalconvert(eval(temp).toString() + val);}
+            if (temp.includes("%")) { lastinput.innerHTML = percent(temp) }
+            else { lastinput.innerHTML = finalconvert(eval(temp).toString() + val); }
         }
-        else{
+        else {
             // last input end is symbol or input is 0 then replace
-            if(isNaN(lastconverted[lastconverted.length-1]) || eval(temp)===0){
-                lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length-1) + finalconvert(val);
+            if (isNaN(lastconverted[lastconverted.length - 1]) || eval(temp) === 0) {
+                lastinput.innerHTML = lastinput.innerHTML.slice(0, lastinput.innerHTML.length - 1) + finalconvert(val);
             }
             // last input end is number
-            else{
+            else {
                 lastinput.innerHTML += finalconvert(val);
             }
         }
@@ -164,17 +185,17 @@ const hit = (val) => {
     }
 
     // Plus or minus
-    else if (val === "plus-minus"){
+    else if (val === "plus-minus") {
         // if last input is empty
-        if(lastconverted === ""){
-            lastinput.innerHTML = "0+"
+        if (lastconverted === "") {
+            lastinput.innerHTML = eval(temp) + "+"
         }
         // last input has symbol at end
-        else if(isNaN(lastconverted[lastconverted.length - 1])){
-            let x = lastconverted[length - 1]
-            let cut = finalconvert(lastconverted.slice(0, lastconverted.length-1))
+        else if (isNaN(lastconverted[lastconverted.length - 1])) {
+            let x = lastconverted[lastconverted.length - 1]
+            let cut = finalconvert(lastconverted.slice(0, lastconverted.length - 1))
             // end is "+"
-            if(x === "+"){
+            if (x === "+") {
                 lastinput.innerHTML = cut + "-"
             }
             else {
@@ -182,7 +203,7 @@ const hit = (val) => {
             }
         }
         // last input has number at end
-        else{
+        else {
             lastinput.innerHTML = finalconvert(lastconverted) + "+"
         }
     }
@@ -221,7 +242,7 @@ const hit = (val) => {
                 alert("The result is heptic please clear all inputs and do a good math")
             }
             // input has %
-            else if(temp.includes("%")){
+            else if (temp.includes("%")) {
                 input.innerHTML = percent(temp)
             }
             else { input.innerHTML = eval(temp) }
@@ -229,21 +250,28 @@ const hit = (val) => {
         // last input not empty
         else {
             // if last input has symbol
-            if (isNaN(lastconverted[lastconverted.length-1])) {
+            if (isNaN(lastconverted[lastconverted.length - 1])) {
                 // the /0 
                 if (eval(lastconverted + temp) === NaN || eval(lastconverted + temp) === Infinity) {
+                    console.log("/0 Entered")
                     alert("The result is heptic please clear all inputs and do a good math")
                 }
                 // % in last input 
-                else if(lastconverted.includes("%")){
+                else if (lastconverted.includes("%")) {
                     console.log("Last input has %")
-                    input.innerHTML = percent(lastconverted+temp)
+                    input.innerHTML = percent(lastconverted + temp)
                     lastinput.innerHTML = ""
                 }
                 else {
-                    console.log("normal symbols")
-                    input.innerHTML = eval(lastconverted + input.innerHTML)
-                    lastinput.innerHTML = ""
+                    // 0/0
+                    if (lastconverted[lastconverted.length - 1]==="/" && eval(temp) == 0) {
+                        alert("The result is heptic please clear all inputs and do a good math")
+                    }
+                    else {
+                        console.log("normal symbols")
+                        input.innerHTML = eval(lastconverted + temp)
+                        lastinput.innerHTML = ""
+                    }
                 }
             }
             // last input copy if no symbol at end of it
@@ -278,8 +306,26 @@ lastinput.addEventListener('animationend', () => { lastinput.classList.remove("s
 
 // Key press events -------------------------------------------------------------------------------------------------------------
 window.addEventListener('keydown', (event) => {
+    event.preventDefault(); // prevent default key configs for browser and document
+    console.log(event)
     if (event.key === " ") {
-        event.preventDefault();
+    }
+    // Clear when "Delete" is pressed
+    else if (event.key === "Delete") {
+        btn[0].click()
+    }
+    // Copy to clipboard with "CTRL+C"
+    else if (event.key === 'c' && event.ctrlKey === true) {
+        async () => {
+            btn[1].click()
+            copy.style.display = "block"
+            copy.innerHTML = "Copied to clipboard \u2713"
+            const copyhit = () => {
+                copy.style.display = "none"
+                copy.innerHTML = "Copy to Clipboard"
+            }
+            await sleep(copyhit)
+        }
     }
     else { hit(event.key) }
 })

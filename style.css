@@ -177,9 +177,11 @@ ul {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
 *::-webkit-scrollbar{
     position: relative;
     height: 5px;
+    border-radius: 10px;
 }
 *::-webkit-scrollbar-thumb{
     background-color: blue;
@@ -320,6 +322,9 @@ ul {
 /* Media Query */
 
 @media screen and (max-width:660px) {
+    ::-webkit-scrollbar{
+        height: 2px;
+    }
     .container {
         height: 90vh;
         width: 95vw;
