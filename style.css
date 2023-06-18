@@ -73,7 +73,7 @@ ul {
 }
 
 .alert-box.alert-now {
-    animation: alert 0.6s ease-in-out;
+    animation: alert 0.3s ease-in-out;
 }
 
 @keyframes alert {
